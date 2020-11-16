@@ -1,6 +1,7 @@
 package com.exampleSpringSecurity.exmpl_Spring_Security.security;
 
 import com.exampleSpringSecurity.exmpl_Spring_Security.auth.ApplicationUserService;
+import com.exampleSpringSecurity.exmpl_Spring_Security.jwt.JwtTokenVerifier;
 import com.exampleSpringSecurity.exmpl_Spring_Security.jwt.JwtUsernameAndPasswordAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +39,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager()))
+                .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .anyRequest()
